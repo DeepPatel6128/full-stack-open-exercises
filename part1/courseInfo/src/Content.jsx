@@ -1,14 +1,16 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import Part from "./Part";
+
 function Content(props) {
-    let partArr = props.part;
+  let parts = props.part;
+  console.log(parts)
   return (
     <div>
-    {partArr.map((part, index) => (
-        <p key={index}>{part.name} {part.exercises}</p>
+      {parts.map((part, index) => (
+        <Part key={index} part={part.name} exercises={part.exercises} />
       ))}
     </div>
   )
 }
+
 export default Content;

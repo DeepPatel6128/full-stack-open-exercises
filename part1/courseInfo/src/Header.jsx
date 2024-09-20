@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 
-function Header(props) {
-    console.log(props)
+function Header({course}) {
   return (
-    <h1>{props.course}</h1>
+    <h1>{course}</h1>
   )
 }
 

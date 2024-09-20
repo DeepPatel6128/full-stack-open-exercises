@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 
-
-export default function Part(props) {
+//using destructuring in this 
+export default function Part({part, exercises}) {
   return (
-    <p key={props.key}>{props.part} {props.exercise}</p>
+    <p>{part} {exercises}</p>
   )
 }

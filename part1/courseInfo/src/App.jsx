@@ -1,15 +1,18 @@
+/* eslint-disable react/prop-types */
 import Content from "./Content";
 import Header from "./Header";
 import Total from "./Total";
 
-
 function App() {
+
   const course = {
     name: 'Half Stack application development',
     parts: [
       {
+
         name: 'Fundamentals of React',
         exercises: 10
+
       },
       {
         name: 'Using props to pass data',
