@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 import Part from "./Part";
 
-function Content(props) {
-  let parts = props.part;
-  console.log(parts)
+function Content({parts}) {
   return (
     <div>
       {parts.map((part, index) => (
