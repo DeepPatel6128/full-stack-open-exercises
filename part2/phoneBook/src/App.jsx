@@ -4,7 +4,6 @@ import ContactsTable from './ContactsTable';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import { useEffect } from 'react';
-import axios from 'axios'
 import phoneServices from './services/phone'
 import Notification from './Notification';
 
@@ -51,7 +50,7 @@ function App() {
       phoneServices.create(contact).then((res) => {
         //we used res.data because we need the server generated id
         setSuccess(true)
-        setContacts(prevContacts => [...prevContacts, res.data]);
+        setContacts(res.data);
         setName('');
         setNumber('');
         
@@ -88,7 +87,7 @@ function App() {
 
   //fetch the contacts from server
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
+    phoneServices.getAll()
       .then((res) => setContacts(res.data))
       .catch((e) => console.log(e.message));
   }, []);
@@ -100,16 +99,18 @@ function App() {
     if (isRemove) {
 
       phoneServices.deletePhone(id)
-        .then((res) => {
-          const filteredContacts = contacts.filter(contact => contact.id !== res.data.id)
+        .then(() => {
+          const filteredContacts = contacts.filter(contact => contact.id !== id)
           setContacts(filteredContacts)
         }).catch((e)=>{
           setSuccess(false)
           setMessage(`${name} has already been removed from the server`)
-          console.log(e)
+          console.log(e);
+                    
           setTimeout(()=>{
             setMessage('');
           }, 5000)
+
         })
     }
 
