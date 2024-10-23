@@ -48,7 +48,6 @@ export default function CountryTable({ countries, filterValue, filterCountries }
                 <li key={key}>{selectedCountry?.languages[key] || 'No language found'}</li>
               ))
               ) : <li>No languages found</li>}
-              
             </ul>
             <img src={selectedCountry?.flags?.png || 'No image found'}/>
           </div>}
