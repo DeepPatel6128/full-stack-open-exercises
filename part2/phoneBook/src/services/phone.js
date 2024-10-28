@@ -10,7 +10,7 @@ const deletePhone = (id) => {
 };
 //update
 const updateNumber = (contact, number) => {
-  return axios.put(`${baseURL}/${contact.id}`, { ...contact, number: number });
+  return axios.put(`${baseURL}/${contact._id}`, { ...contact, number: number });
 };
 //get
 const getAll = () => {

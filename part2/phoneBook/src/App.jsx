@@ -27,10 +27,11 @@ function App() {
     const existingContact = contacts.find((contact) => (contact.name.toLowerCase().includes(name.toLowerCase())));
     const existingNumber = contacts.find((contact) => contact.number == number);
     if (existingContact) {
-      if (confirm(`${name} already exists with same number, do you want ro replace old number with new number ? `) && !existingNumber) {
+      if (confirm(`${name} already exists, do you want ro replace old number with new number ? `) && !existingNumber) {
         phoneServices.updateNumber(existingContact, number).then((res) => {
+          console.log(res.data)
           setSuccess(true)
-          setContacts(prevContacts => prevContacts.map((contact) => contact.id == res.data.id ? res.data : contact));
+          setContacts(res.data);
           setName('');
           setNumber('');
           setMessage(`Contact updated for ${name}`)
@@ -49,6 +50,7 @@ function App() {
 
       phoneServices.create(contact).then((res) => {
         //we used res.data because we need the server generated id
+        console.log(res.data)
         setSuccess(true)
         setContacts(res.data);
         setName('');
@@ -100,11 +102,13 @@ function App() {
 
       phoneServices.deletePhone(id)
         .then(() => {
-          const filteredContacts = contacts.filter(contact => contact.id !== id)
+          const filteredContacts = contacts.filter(contact => contact._id !== id)
           setContacts(filteredContacts)
         }).catch((e)=>{
           setSuccess(false)
           setMessage(`${name} has already been removed from the server`)
+          const filteredContacts = contacts.filter(contact => contact._id !== id)
+          setContacts(filteredContacts)
           console.log(e);
                     
           setTimeout(()=>{
