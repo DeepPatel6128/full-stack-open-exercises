@@ -26,6 +26,8 @@ function App() {
     //find a number which already exists in the object
     const existingContact = contacts.find((contact) => (contact.name.toLowerCase().includes(name.toLowerCase())));
     const existingNumber = contacts.find((contact) => contact.number == number);
+    console.log(existingContact, existingNumber)
+    if(name != "" && number != ""){
     if (existingContact) {
       if (confirm(`${name} already exists, do you want ro replace old number with new number ? `) && !existingNumber) {
         phoneServices.updateNumber(existingContact, number).then((res) => {
@@ -46,7 +48,7 @@ function App() {
         setName('');
         setNumber('');
       }
-    } else {
+    } else if(!existingNumber) {
 
       phoneServices.create(contact).then((res) => {
         //we used res.data because we need the server generated id
@@ -63,6 +65,15 @@ function App() {
           }, 5000)
       }).catch((e) => console.log(e.message))
     }
+    else{
+      alert('Number is already registered')
+      setName('')
+      setNumber('')
+    }
+  }
+  else{
+    alert('Either name or contact field is empty, please fill valid values')
+  }
 
   }
   //injecting the current name from the input element
