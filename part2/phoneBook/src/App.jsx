@@ -24,57 +24,46 @@ function App() {
     e.preventDefault();
     let contact = { name: name, number: number };
     //find a number which already exists in the object
-    const existingContact = contacts.find((contact) => (contact.name.toLowerCase().includes(name.toLowerCase())));
-    const existingNumber = contacts.find((contact) => contact.number == number);
-    console.log(existingContact, existingNumber)
-    if(name != "" && number != ""){
-    if (existingContact) {
-      if (confirm(`${name} already exists, do you want ro replace old number with new number ? `) && !existingNumber) {
-        phoneServices.updateNumber(existingContact, number).then((res) => {
-          console.log(res.data)
-          setSuccess(true)
-          setContacts(res.data);
-          setName('');
-          setNumber('');
-          setMessage(`Contact updated for ${name}`)
-          
-          setTimeout(()=>{
-            setMessage('');
-          }, 5000)
-          
-        }).catch((e) => setMessage(e.message))
-      } else {
-        alert(`${number} already exists for some other contact`)
-        setName('');
-        setNumber('');
-      }
-    } else if(!existingNumber) {
+    
 
       phoneServices.create(contact).then((res) => {
         //we used res.data because we need the server generated id
-        console.log(res.data)
         setSuccess(true)
         setContacts(res.data);
         setName('');
         setNumber('');
-        
         setMessage(`Added ${name}`)
          
           setTimeout(()=>{
             setMessage('');
           }, 5000)
-      }).catch((e) => console.log(e.message))
-    }
-    else{
-      alert('Number is already registered')
-      setName('')
-      setNumber('')
-    }
-  }
-  else{
-    alert('Either name or contact field is empty, please fill valid values')
-  }
-
+      }).catch((e) =>{
+        if(e.status === 409){
+          if(confirm("Found a contact with same name, do you want to update the old number with new number ?")){
+          phoneServices.updateNumber(contact, contact.number).then((res)=>{
+            setContacts(res.data)
+            setName('')
+            setNumber('')
+            setMessage('Updated Number')
+            setSuccess(true)
+             setTimeout(()=>{
+            setMessage('');
+          }, 5000)
+          }).catch((e)=>{
+            setMessage(e.response ? e.response.data.message : 'An error occured')
+            setSuccess(false)
+          })
+        }
+        }
+          else{
+            setMessage(e.response ? e.response.data.message : 'An error occured')
+        setSuccess(false)
+        setTimeout(()=>{
+            setMessage('');
+          }, 5000)
+      }
+      })
+        
   }
   //injecting the current name from the input element
   const setNameField = (e) => {
